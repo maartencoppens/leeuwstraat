@@ -29,6 +29,15 @@ The signup form posts to `/api/subscribe`, which adds the address to a contact l
 
 Until the variables are set, the form shows "Inschrijven is nog niet mogelijk." For `npm run dev`, put the same two variables in `.env.local` (copy `.env.example`). Failed calls to Brevo are logged under the deployment's Logs in Vercel.
 
+### Switch to the next phase
+
+The phase (how many story shards are unlocked, 0 to 4) is the environment variable `NEXT_PUBLIC_CURRENT_PHASE`:
+
+1. In Vercel, Project > Settings > Environment Variables: set `NEXT_PUBLIC_CURRENT_PHASE` to the new phase, for example `2` (for Production; add Preview too if you want to check it there first).
+2. Deployments > the latest production deployment > ⋯ > **Redeploy**. The phase is built into the site, so it only changes after a new deployment (about a minute).
+
+A value other than 0 to 4 fails the deployment and the current site stays online. Without the variable the site uses `DEFAULT_PHASE` in `config/phases.ts`. Locally, set it in `.env` or `.env.local`; the projection build (`npm run build:visual`) uses that same value.
+
 ## Projection on the window (/visual)
 
 `/visual` is the version projected onto the real window (19:36): black around the glass, brighter and livelier panes, and a QR code to `lee-uwstraat.be/raam`. Every 25 s the window moves up and shrinks for 10 s, so the logo and a larger QR code fit below it; while the window fills the picture, the QR code sits on the lower left shard.
@@ -52,7 +61,7 @@ The mapping onto the real window is done in TouchDesigner with Kantan Mapper. Fo
 - `content/nl.ts`: all interface text. Texts marked `TODO` still need approval.
 - `content/stories.ts`: the four stories that open when a visitor clicks an unlocked story shard: photo, small line, title and paragraphs. Put the original photos in `public/stories/` and point `image` to them.
 - `config/festival.ts`: the countdown target (`FESTIVAL_START`). Still midnight; change it to the start time once known.
-- `config/phases.ts`: the four phases (id, shard, photo) and `CURRENT_PHASE`, the phase the campaign is in. Its shard and those of earlier phases show a sharp photo, can be clicked and show the click hints (`CLICK_HINTS`). Change the number, then rebuild and deploy.
+- `config/phases.ts`: the four phases (id, shard, photo) and `CURRENT_PHASE`, the phase the campaign is in (set on Vercel, see "Switch to the next phase" above). Its shard and those of earlier phases show a sharp photo, can be clicked and show the click hints (`CLICK_HINTS`).
 - `config/shards.json`: position, outline and colour of the 21 shards, read from the Figma frame "New Glass Window".
 - `config/site.ts`: site URL and the QR paths (`/raam`, `/poster1` to `/poster4`, `/kids`, `/onderlegger`, `/bel`). Each redirects to `/?src=<name>`.
 - `app/globals.css`: brand tokens from the Figma brandbook as the Tailwind theme (only these colours, spacing and fonts exist), plus the CSS for the glass.
