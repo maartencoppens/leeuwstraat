@@ -1,0 +1,362 @@
+@import "tailwindcss";
+
+/*
+  Brand tokens from the Figma brandbook (collection "Leeuwstraat Brand", mode Evening).
+  The default Tailwind palette, spacing and fonts are cleared, so only these exist.
+*/
+@theme {
+  --color-*: initial;
+  --color-night-950: #120c07;
+  --color-night-900: #1c140d;
+  --color-night-800: #2a1d13;
+  --color-night-700: #3f2c1c;
+  --color-night-600: #563c27;
+  --color-night-500: #735134;
+  --color-cream-400: #d9a171;
+  --color-cream-300: #e6b994;
+  --color-cream-200: #f2d2b6;
+  --color-cream-100: #f9e9da;
+  --color-gold-700: #926a35;
+  --color-gold-600: #b5854a;
+  --color-gold-500: #d9a25f;
+  --color-gold-400: #e2aa61;
+  --color-gold-300: #eabe8d;
+  --color-blue-800: #384852;
+  --color-blue-500: #5faad9;
+  --color-blue-300: #a1cce9;
+  --color-teal-800: #335456;
+  --color-teal-500: #67bcc1;
+  --color-teal-300: #a8d9dc;
+  --color-indigo-800: #373555;
+  --color-indigo-500: #6f6bbd;
+  --color-indigo-300: #adabd9;
+  --color-white: #f2f2f2;
+
+  --spacing-*: initial;
+  --spacing-0: 0px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 24px;
+  --spacing-6: 32px;
+  --spacing-7: 48px;
+  --spacing-8: 64px;
+  /* Minimum touch target (WCAG), not a brand spacing step. */
+  --spacing-tap: 44px;
+
+  --radius-*: initial;
+  --radius-sm: 2px;
+  --radius-arch: 999px;
+
+  --font-*: initial;
+  --font-serif: var(--font-newsreader), Georgia, serif;
+
+  /* Leeuwstraat/Titels and Leeuwstraat/Tekst styles */
+  --text-*: initial;
+  --text-titel-1: 44px;
+  --text-titel-1--line-height: 1.05;
+  --text-titel-1--letter-spacing: 0.02em;
+  --text-titel-1--font-weight: 600;
+  --text-titel-2: 30px;
+  --text-titel-2--line-height: 1.15;
+  --text-titel-2--letter-spacing: 0.02em;
+  --text-titel-2--font-weight: 600;
+  --text-label: 13px;
+  --text-label--line-height: 1.3;
+  --text-label--letter-spacing: 0.3em;
+  --text-label--font-weight: 500;
+  --text-klein: 14px;
+  --text-klein--line-height: 1.45;
+  --text-knop: 15px;
+  --text-knop--line-height: 1.2;
+  --text-knop--font-weight: 600;
+  --text-body: 17px;
+  --text-body--line-height: 1.55;
+  --text-kop-3: 22px;
+  --text-kop-3--line-height: 1.3;
+  --text-kop-3--font-weight: 600;
+
+
+  @keyframes shard-drift {
+    from {
+      translate: 0 0;
+      rotate: 0deg;
+      scale: var(--drift-scale-from);
+    }
+    to {
+      translate: var(--drift-x) var(--drift-y);
+      rotate: var(--drift-rotate);
+      scale: var(--drift-scale-to);
+    }
+  }
+
+  @keyframes shard-breathe {
+    from {
+      opacity: var(--light-low);
+    }
+    to {
+      opacity: var(--light-high);
+    }
+  }
+
+  @keyframes shard-glint {
+    0%,
+    70%,
+    100% {
+      opacity: 0;
+    }
+    82% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes sun-beam {
+    from {
+      rotate: calc(var(--beam-angle) - 0.8deg);
+      opacity: 0.5;
+    }
+    to {
+      rotate: calc(var(--beam-angle) + 0.8deg);
+      opacity: 1;
+    }
+  }
+
+  /* A broad band of light crossing the whole window, then a long pause. */
+  @keyframes glass-sweep {
+    0% {
+      translate: 0 0;
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    35%,
+    100% {
+      translate: 280% 0;
+      opacity: 0;
+    }
+  }
+
+  @keyframes sun-glow {
+    from {
+      opacity: 0.4;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* Inline, so the per-shard variables in these values resolve on each element, not on :root. */
+@theme inline {
+  --animate-shard-drift: shard-drift var(--drift-time) ease-in-out var(--drift-delay) infinite alternate;
+  --animate-shard-breathe: shard-breathe var(--breathe-time) ease-in-out var(--breathe-delay) infinite alternate;
+  --animate-shard-glint: shard-glint 9s ease-in-out var(--glint-delay) infinite;
+  --animate-sun-beam: sun-beam var(--beam-time) ease-in-out var(--beam-delay) infinite alternate;
+  --animate-glass-sweep: glass-sweep 13s ease-in-out infinite;
+  --animate-sun-glow: sun-glow var(--beam-time) ease-in-out var(--beam-delay) infinite alternate;
+}
+
+@layer base {
+  html {
+    background: var(--color-night-950);
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-night-950 font-serif text-body text-cream-300 antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-white);
+    outline-offset: 2px;
+  }
+}
+
+/*
+  Glass shards. These parts need masks, blend modes and per-shard timing, which read
+  better as plain CSS than as long utility strings.
+*/
+.shard {
+  mask-image: var(--shape);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+
+.shard__light {
+  mix-blend-mode: soft-light;
+}
+
+/* Unlock: crossfade to the sharp photo, a flash of light and a short pulse, then rest. */
+.shard__pulse[data-revealing] {
+  animation: shard-pulse 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.shard[data-revealing] .shard__flash {
+  animation: shard-flash 1.6s ease-out both;
+}
+
+@keyframes shard-pulse {
+  0%,
+  100% {
+    scale: 1;
+  }
+  35% {
+    scale: 1.035;
+  }
+}
+
+@keyframes shard-flash {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/*
+  Click hints on the story shards, switched on per shard in config/phases.ts.
+  Breathe: the shard slowly swells and settles. Orbit: a spot of light runs around the border.
+*/
+.shard-hint-breathe {
+  animation: shard-hint-breathe 3.2s ease-in-out var(--hint-delay, 0s) infinite;
+}
+
+@keyframes shard-hint-breathe {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.045;
+  }
+}
+
+.shard-orbit path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.shard-orbit__track {
+  stroke: var(--color-cream-200);
+  stroke-width: 5;
+  opacity: 0.35;
+  animation: shard-orbit-track 3.2s ease-in-out var(--hint-delay, 0s) infinite;
+}
+
+/* A wide, soft tail behind a slightly lighter head, travelling together. All three are blurred (see GlassShard). */
+.shard-orbit__glow {
+  animation: shard-orbit-glow 4.5s linear var(--hint-delay, 0s) infinite;
+  stroke: var(--color-gold-300);
+  stroke-width: 12;
+  stroke-dasharray: 26 74;
+  opacity: 0.8;
+}
+
+.shard-orbit__spark {
+  stroke: var(--color-cream-200);
+  stroke-width: 8;
+  stroke-dasharray: 14 86;
+  opacity: 0.55;
+  /* 12 further along than the tail, so it sits at its front. */
+  animation: shard-orbit-spark 4.5s linear var(--hint-delay, 0s) infinite;
+}
+
+/* The paths have pathLength 100, so 100 is one full lap. */
+@keyframes shard-orbit-glow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@keyframes shard-orbit-spark {
+  from {
+    stroke-dashoffset: -12;
+  }
+  to {
+    stroke-dashoffset: -112;
+  }
+}
+
+@keyframes shard-orbit-track {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.65;
+  }
+}
+
+/* Without motion, the border simply shines. */
+@media (prefers-reduced-motion: reduce) {
+  .shard-orbit__track {
+    opacity: 0.8;
+  }
+
+  .shard-orbit__glow,
+  .shard-orbit__spark {
+    display: none;
+  }
+}
+
+/*
+  An opened story shard (StoryDialog). These are the open state; the component animates
+  from the shard in the window to here, and back.
+*/
+.story-frame {
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: min(94vw, 1100px);
+  height: min(92svh, 920px);
+}
+
+/* A soft warm light around the edge of the glass. */
+.story-frame__glow {
+  filter: drop-shadow(0 0 1px rgb(234 190 141 / 0.6)) drop-shadow(0 0 18px rgb(226 170 97 / 0.3));
+}
+
+/* See-through glass: the blurred page shows through a little. */
+.story-glass {
+  background-color: rgb(18 12 7 / 0.7);
+}
+
+.story-glass__texture {
+  opacity: 0.3;
+}
+
+/* The safe area inside the open shape, where the edges never reach. */
+.story-content {
+  inset: 6% 8% 6% 8%;
+}
+
+.story-content__scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(242 210 182 / 0.3) transparent;
+  /* The text fades out at the bottom edge instead of being cut. */
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent);
+}
+
+/* The reflection fades out into the floor. */
+.floor-reflection {
+  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.8), rgb(0 0 0 / 0));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

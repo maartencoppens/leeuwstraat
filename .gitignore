@@ -1,0 +1,22 @@
+# dependencies
+/node_modules
+
+# builds
+/.next/
+/out/
+/visual-build/
+*.tsbuildinfo
+next-env.d.ts
+
+# secrets: the Brevo key lives in Vercel's environment variables and .env.local only
+.env*
+!.env.example
+brevo-config.php
+
+# vercel
+.vercel
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*

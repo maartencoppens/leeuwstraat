@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#1f1e36" />
+    <title>Leeuwstraat</title>
+    <link rel="stylesheet" href="css/page.css" />
+    <link rel="stylesheet" href="css/glass.css" />
+    <script src="js/glass.js" defer></script>
+    <script src="js/page.js" defer></script>
+  </head>
+
+  <body>
+    <div class="backdrop"></div>
+    <img class="page-light" src="assets/light/page-mobile.svg" alt="" />
+
+    <header class="site-header">
+      <h1 class="site-logo">
+        <img src="assets/logo.svg" width="300" height="65" alt="Leeuwstraat Experience Festival" />
+      </h1>
+      <p class="site-date">23/01/2027 · Campus Leeuwstraat</p>
+    </header>
+
+    <main class="window">
+      <!-- The window's outline: two faint arches around it, and the plate that keeps the lead lines dark. -->
+      <svg class="window__frame" viewBox="0 0 450 804.27" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <path id="arch" vector-effect="non-scaling-stroke" d="M0 804.27V422L1.37 392.7C4.95 325.87 19.4 263.48 47.52 202.72C79.42 134.03 127.1 73.83 186.67 27.04C196.2 19.5 214.05 6.08 225 0C235.95 6.08 253.8 19.5 263.33 27.04C322.9 73.83 370.58 134.03 402.48 202.72C430.6 263.48 445.05 325.87 448.63 392.7L450 422V804.27" />
+          <linearGradient id="arch-line" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="804.27">
+            <stop offset="0" stop-color="#e2aa61" stop-opacity="0.6" />
+            <stop offset="1" stop-color="#e2aa61" stop-opacity="0.08" />
+          </linearGradient>
+        </defs>
+        <use class="window__arch window__arch--outer" href="#arch" stroke="url(#arch-line)" transform="translate(225 804.27) scale(1.26 1.07) translate(-225 -804.27)" />
+        <use class="window__arch" href="#arch" stroke="url(#arch-line)" transform="translate(225 804.27) scale(1.13 1.035) translate(-225 -804.27)" />
+        <use class="window__plate" href="#arch" />
+      </svg>
+      <div class="glass" role="img" aria-label="Glasraam in gebroken gekleurd glas"></div>
+      <img class="window__light" src="assets/light/window.svg" alt="" />
+
+      <div class="clock" role="timer" aria-label="Tijd tot het festival" data-target="2027-01-23T00:00:00+01:00">
+        <div class="clock__units">
+          <div class="clock__unit"><span class="clock__value" data-unit="days">--</span><span class="clock__label">dagen</span></div>
+          <div class="clock__unit"><span class="clock__value" data-unit="hours">--</span><span class="clock__label">uren</span></div>
+          <div class="clock__unit"><span class="clock__value" data-unit="minutes">--</span><span class="clock__label">min</span></div>
+          <div class="clock__unit"><span class="clock__value" data-unit="seconds">--</span><span class="clock__label">sec</span></div>
+        </div>
+      </div>
+    </main>
+
+    <form class="signup">
+      <label class="visually-hidden" for="email">E-mailadres</label>
+      <input class="signup__field" id="email" name="email" type="email" placeholder="E-mailadres" autocomplete="email" required />
+      <button class="button" type="submit">Blijf op de hoogte <span aria-hidden="true">→</span></button>
+      <p class="signup__status" role="status"></p>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,214 @@
+/* Multiplies how far the shards move. */
+:root {
+  --drift-strength: 1.5;
+}
+
+/* Fills .window, which sets the size for each layout in page.css. */
+.glass {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  touch-action: pinch-zoom;
+}
+
+.shard {
+  --color: transparent;
+  --light: #fff6e8;
+  --reflection: 1;
+  position: absolute;
+  overflow: hidden;
+  background: var(--nacht-950);
+  opacity: var(--shard-opacity, 1);
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  transition: filter 0.6s ease;
+  animation:
+    var(--drift-name) var(--drift-time, 10s) var(--drift-delay, 0s) infinite,
+    breathe var(--breathe-time, 10s) ease-in-out var(--breathe-delay, 0s) infinite;
+}
+
+.shard > * {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Photo behind the glass. CSS blur is half of Figma's radius; it scales with the window. */
+.shard > .shard__photo {
+  inset: auto;
+  top: var(--photo-top, 0);
+  left: var(--photo-left, 0);
+  width: var(--photo-width, 100%);
+  height: var(--photo-height, 100%);
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+.shard > .shard__photo.is-loaded {
+  opacity: 1;
+}
+
+.shard__photo-blur {
+  position: absolute;
+  inset: 0;
+  filter: blur(calc(100cqw * var(--blur, 5) / 2 / 450));
+}
+
+.shard__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: var(--image-opacity, 0.7);
+}
+
+.shard__photo-light {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0.2;
+  mix-blend-mode: soft-light;
+}
+
+.shard__photo-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.6 -.6'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.shard__texture {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.shard__tint {
+  background: var(--color);
+  mix-blend-mode: overlay;
+}
+
+/* Figma uses 50%, but its soft-light is weaker than the browser's on dark glass. */
+.shard__tint--soft {
+  opacity: 0.28;
+  mix-blend-mode: soft-light;
+}
+
+.shard__overlay {
+  background: var(--overlay-color, transparent);
+  opacity: var(--overlay-opacity, 0);
+  mix-blend-mode: var(--overlay-blend, normal);
+}
+
+/*
+  Light on the glass. The glare is static, while the sheen and glint light up as a
+  wave passes. Every pane has its own highlight angle, so the panes read as separate
+  pieces of glass. Only opacity animates, which stays smooth on phones.
+*/
+.shard__glare,
+.shard__sheen,
+.shard__glint,
+.shard__near {
+  background: linear-gradient(var(--sheen-angle, 115deg), transparent 18%, var(--light) 50%, transparent 82%);
+  opacity: 0;
+}
+
+.shard__glare {
+  opacity: calc(0.09 * var(--reflection));
+}
+
+.shard__sheen {
+  animation: sheen 16s ease-in-out infinite;
+  animation-delay: calc(var(--wave) * 4.5s);
+}
+
+.shard__glint {
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  animation: glint 23s ease-in-out infinite;
+  animation-delay: calc(var(--wave-back) * 5.5s + 3s);
+}
+
+.shard__near {
+  opacity: calc(var(--near, 0) * 0.14 * var(--reflection));
+  transition: opacity 0.5s ease-out;
+}
+
+.glass[data-reflections="off"] :is(.shard__glare, .shard__sheen, .shard__glint, .shard__near) {
+  display: none;
+}
+
+@keyframes sheen {
+  0%,
+  26%,
+  100% {
+    opacity: 0;
+  }
+  11% {
+    opacity: calc(0.11 * var(--reflection));
+  }
+}
+
+@keyframes glint {
+  0%,
+  20%,
+  100% {
+    opacity: 0;
+  }
+  8% {
+    opacity: calc(0.75 * var(--reflection));
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: var(--shard-opacity, 1);
+  }
+  50% {
+    opacity: calc(var(--shard-opacity, 1) * var(--breathe-opacity, 1));
+  }
+}
+
+@keyframes drift-38 {
+  0%, 100% { translate: 0 0; scale: 1; animation-timing-function: ease-in-out; }
+  38% { translate: var(--drift-x) var(--drift-y); scale: var(--drift-scale); animation-timing-function: ease-in-out; }
+}
+
+@keyframes drift-43 {
+  0%, 100% { translate: 0 0; scale: 1; animation-timing-function: ease-in-out; }
+  43.5% { translate: var(--drift-x) var(--drift-y); scale: var(--drift-scale); animation-timing-function: ease-in-out; }
+}
+
+@keyframes drift-49 {
+  0%, 100% { translate: 0 0; scale: 1; animation-timing-function: ease-in-out; }
+  49% { translate: var(--drift-x) var(--drift-y); scale: var(--drift-scale); animation-timing-function: ease-in-out; }
+}
+
+@keyframes drift-54 {
+  0%, 100% { translate: 0 0; scale: 1; animation-timing-function: ease-in-out; }
+  54.5% { translate: var(--drift-x) var(--drift-y); scale: var(--drift-scale); animation-timing-function: ease-in-out; }
+}
+
+@keyframes drift-60 {
+  0%, 100% { translate: 0 0; scale: 1; animation-timing-function: ease-in-out; }
+  60% { translate: var(--drift-x) var(--drift-y); scale: var(--drift-scale); animation-timing-function: ease-in-out; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shard {
+    transition: none;
+    animation: none;
+  }
+
+  .shard__sheen,
+  .shard__glint {
+    animation: none;
+  }
+}

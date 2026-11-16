@@ -1,0 +1,372 @@
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url("../assets/fonts/newsreader.woff2") format("woff2");
+}
+
+/*
+  --u is one design pixel. Phones follow the 390 wide Figma frame, and the desktop
+  layout follows the 1440 x 900 frame, so everything scales together.
+*/
+:root {
+  --nacht: #1c140d;
+  --nacht-950: #120c07;
+  --nacht-800: #2a1d13;
+  --nacht-600: #563c27;
+  --creme-100: #f9e9da;
+  --creme-300: #e6b994;
+  --creme-400: #d9a171;
+  --goud: #d9a25f;
+  --radius-sm: 2px;
+
+  --u: min(100vw / 390, 1.4px);
+  --window-width: max(200px, min(264 * var(--u), (100svh - 290 * var(--u)) * 318 / 568.35));
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  background: var(--nacht-950);
+}
+
+/* Blue hour: an indigo evening sky, a last amber afterglow low behind the window, then night. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(75% 30% at 50% 80%, rgb(226 140 74 / 0.42), rgb(226 140 74 / 0.14) 55%, rgb(226 140 74 / 0)),
+    linear-gradient(180deg, #151a30 0%, #1d2340 30%, #2a2c4c 55%, #33304a 70%, #241d27 86%, #1c140d 100%);
+}
+
+/* Fine grain, so the dark gradient doesn't show bands. */
+.backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.6 -.6'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  min-height: 100svh;
+  margin: 0;
+  padding: max(12px, env(safe-area-inset-top)) 0 max(12px, env(safe-area-inset-bottom));
+  overflow: clip;
+  color: var(--creme-300);
+  font-family: "Newsreader", Georgia, serif;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.page-light {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.site-header {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(22 * var(--u));
+}
+
+.site-logo {
+  width: calc(264 * var(--u));
+  margin: 0;
+}
+
+.site-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.site-date {
+  margin: 0;
+  font-size: max(13px, 14 * var(--u));
+  line-height: 1.45;
+  white-space: nowrap;
+}
+
+.window {
+  position: relative;
+  width: var(--window-width);
+  aspect-ratio: 318 / 568.35;
+}
+
+/* Warm light spilling from behind the window into the evening. */
+.window::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 190%;
+  aspect-ratio: 1 / 1.35;
+  translate: -50% -50%;
+  background: radial-gradient(closest-side, rgb(234 190 141 / 0.2), rgb(234 190 141 / 0.08) 60%, rgb(234 190 141 / 0));
+  pointer-events: none;
+}
+
+.window__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.window__arch {
+  fill: none;
+  stroke-width: 1px;
+}
+
+.window__arch--outer {
+  opacity: 0.55;
+}
+
+/* Lead lines are always nacht-950: this shows through the gaps between the shards. */
+.window__plate {
+  fill: var(--nacht-950);
+}
+
+@media (max-height: 720px) and (max-aspect-ratio: 5 / 4) {
+  .window__arch--outer {
+    display: none;
+  }
+}
+
+.window__light {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: none;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.clock {
+  position: absolute;
+  top: 58%;
+  left: 50%;
+  z-index: 3;
+  width: calc(342 * var(--u));
+  height: calc(92 * var(--u));
+  translate: -50% -50%;
+}
+
+/* Soft dark backdrop that keeps the numbers readable over the glass. */
+.clock::before {
+  content: "";
+  position: absolute;
+  inset: 0 calc(16 * var(--u));
+  border-radius: 999px;
+  background: radial-gradient(closest-side, rgb(18 12 7 / 0.91) 64%, rgb(18 12 7 / 0));
+  filter: blur(calc(3 * var(--u)));
+}
+
+.clock__units {
+  position: absolute;
+  top: calc(17 * var(--u));
+  right: calc(13 * var(--u));
+  left: calc(13 * var(--u));
+  display: flex;
+  justify-content: space-between;
+}
+
+.clock__unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(7 * var(--u));
+  width: calc(72 * var(--u));
+  white-space: nowrap;
+}
+
+.clock__value {
+  color: var(--creme-100);
+  font-size: calc(48 * var(--u));
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.clock__label {
+  font-size: max(12px, 14 * var(--u));
+  line-height: 1.45;
+}
+
+.signup {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--u));
+  width: calc(326 * var(--u));
+}
+
+.signup__field,
+.button {
+  height: max(44px, 48 * var(--u));
+  padding: 0 calc(16 * var(--u));
+  font-family: inherit;
+}
+
+.signup__field {
+  width: 100%;
+  border: 1px solid var(--nacht-600);
+  border-radius: var(--radius-sm);
+  background: var(--nacht-800);
+  color: var(--creme-100);
+  font-size: max(16px, 17 * var(--u));
+  line-height: 1.55;
+}
+
+.signup__field::placeholder {
+  color: var(--creme-400);
+  opacity: 1;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+  border: 0;
+  background: var(--goud);
+  color: var(--nacht);
+  font-size: max(14px, 15 * var(--u));
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.signup__field:focus-visible,
+.button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.signup__status {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin: calc(8 * var(--u)) 0 0;
+  font-size: max(13px, 14 * var(--u));
+  line-height: 1.45;
+}
+
+@media (min-width: 1000px) and (min-aspect-ratio: 5 / 4) {
+  :root {
+    --u: min(100vw / 1440, 100svh / 900);
+    --window-width: calc(318 * var(--u));
+  }
+
+  body {
+    display: block;
+    height: 100svh;
+    padding: 0;
+  }
+
+  .page-light {
+    display: none;
+  }
+
+  .site-header {
+    position: static;
+  }
+
+  .site-logo {
+    position: absolute;
+    top: calc(25 * var(--u));
+    left: calc(46 * var(--u));
+    z-index: 3;
+    width: calc(300 * var(--u));
+  }
+
+  .site-date {
+    position: absolute;
+    top: calc(40 * var(--u));
+    right: calc(167 * var(--u));
+    z-index: 3;
+    translate: 50% 0;
+  }
+
+  .window {
+    position: absolute;
+    top: calc(50svh - 258 * var(--u));
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  .window__light {
+    display: block;
+  }
+
+  .clock {
+    top: calc(246 * var(--u));
+    width: calc(504 * var(--u));
+    height: calc(154 * var(--u));
+    translate: -50% 0;
+  }
+
+  .clock::before {
+    inset: 0 calc(70 * var(--u));
+  }
+
+  .clock__units {
+    top: calc(20 * var(--u));
+    right: calc(24 * var(--u));
+    left: calc(24 * var(--u));
+  }
+
+  .clock__unit {
+    gap: calc(9 * var(--u));
+    width: calc(104 * var(--u));
+  }
+
+  .clock__value {
+    font-size: calc(76 * var(--u));
+  }
+
+  .signup {
+    position: absolute;
+    top: calc(50svh + 286 * var(--u));
+    right: calc(20 * var(--u));
+    flex-direction: row;
+    width: auto;
+  }
+
+  .signup__field {
+    width: calc(280 * var(--u));
+  }
+
+  .button {
+    width: calc(180 * var(--u));
+  }
+}

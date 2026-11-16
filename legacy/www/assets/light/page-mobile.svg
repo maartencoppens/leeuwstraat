@@ -1,0 +1,33 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Diagonal window light" clip-path="url(#clip0_0_152)">
+<g id="Soft light streak" filter="url(#filter0_f_0_152)">
+<path d="M-50 191H-17.5172L421 709H380.397L-50 191Z" fill="#F2D2B6" fill-opacity="0.101961"/>
+</g>
+<g id="Soft light streak_2" filter="url(#filter1_f_0_152)">
+<path d="M17 -12H63.9714L428 596H392.771L17 -12Z" fill="#F2D2B6" fill-opacity="0.101961"/>
+</g>
+<g id="Fine light streak" filter="url(#filter2_f_0_152)">
+<path d="M-16 385H-7.92453L412 802H398.541L-16 385Z" fill="#F9E9DA" fill-opacity="0.101961"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_0_152" x="-67" y="174" width="505" height="552" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="8.5" result="effect1_foregroundBlur_0_152"/>
+</filter>
+<filter id="filter1_f_0_152" x="3" y="-26" width="439" height="636" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="7" result="effect1_foregroundBlur_0_152"/>
+</filter>
+<filter id="filter2_f_0_152" x="-22" y="379" width="440" height="429" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="3" result="effect1_foregroundBlur_0_152"/>
+</filter>
+<clipPath id="clip0_0_152">
+<rect width="390" height="844" fill="white"/>
+</clipPath>
+</defs>
+</svg>
