@@ -97,7 +97,7 @@ export const STORIES: Record<1 | 2 | 3 | 4, Story> = {
     eyebrow: "Hoofdstuk 4",
     title: "Wat ik was",
     image: "/glass/phases/phase-4.webp",
-    imageAlt: "Een open smeedijzeren poort met het woord Zoo, tussen lantaarns in de mist.",
+    imageAlt: "Een warm verlichte kapel met gewelfd plafond en altaar, gezien vanaf het oksaal met het orgel.",
     paragraphs: [
       "Ik moet je nog één ding vertellen.",
       "Ik zei dat stilte alles was wat ik kende.",

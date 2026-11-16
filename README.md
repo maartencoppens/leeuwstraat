@@ -87,4 +87,4 @@ To only replace phase photos, put them in `originals/phases/` named after the ph
 npm run assets -- --phases originals/phases
 ```
 
-This crops each photo to its shard, writes the sharp and locked WebP and redraws the floor reflection. Phases without a photo in that folder keep their current images. Phases 1 and 2 have their real photos there; 3 and 4 are still placeholders.
+This crops each photo to its shard, writes the sharp and locked WebP and redraws the floor reflection. Phases without a photo in that folder keep their current images. Phases 1, 2 and 4 have their real photos there; phase 3 is still a placeholder. Running it rebuilds every phase that has a photo there, which only changes the random noise of the locked versions.
